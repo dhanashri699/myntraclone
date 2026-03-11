@@ -1,0 +1,615 @@
+```html
+<!--<!DOCTYPE html>
+<html>
+<head>
+<title>Kitchen Rule Clone</title>
+
+<style>
+
+body{
+font-family: Arial;
+margin:0;
+background:url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") no-repeat center fixed;
+background-size:cover;
+}
+
+/* Navbar */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(255,105,180,0.9);
+color:black;
+padding:15px;
+}
+
+.navbar input{
+padding:7px;
+border:none;
+border-radius:5px;
+}
+
+.nav-icons{
+display:flex;
+gap:15px;
+font-size:22px;
+align-items:center;
+}
+
+.nav-icons span{
+cursor:pointer;
+transition:0.3s;
+}
+
+.nav-icons span:hover{
+color:white;
+transform:scale(1.2);
+}
+
+/* Header */
+
+.header{
+text-align:center;
+padding:40px;
+color:white;
+background:rgba(0,0,0,0.4);
+}
+
+/* Cards */
+
+.container{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:20px;
+padding:20px;
+}
+
+.card{
+width:250px;
+background:white;
+border-radius:12px;
+box-shadow:0 10px 20px rgba(0,0,0,0.3);
+overflow:hidden;
+transition:0.4s;
+}
+
+.card:hover{
+transform:translateY(-10px) scale(1.05);
+}
+
+.card img{
+width:100%;
+height:160px;
+object-fit:cover;
+border:4px solid #ff4d6d;
+border-radius:10px;
+}
+
+.rating{
+color:green;
+font-weight:bold;
+}
+
+.btn{
+display:block;
+width:80%;
+margin:10px auto 15px;
+padding:8px;
+border:none;
+border-radius:6px;
+background:#ff4d6d;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btn:hover{
+background:#e63950;
+}
+
+.page{
+display:none;
+}
+
+.active{
+display:block;
+}
+
+/* Order Popup */
+
+.orderBox{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:white;
+padding:20px;
+border-radius:10px;
+width:300px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+display:none;
+z-index:1000;
+}
+
+.orderBox h3{
+text-align:center;
+}
+
+.orderItem{
+display:flex;
+justify-content:space-between;
+margin:5px 0;
+}
+
+.total{
+font-weight:bold;
+margin-top:10px;
+}
+
+.closeBtn{
+background:red;
+color:white;
+border:none;
+padding:5px 10px;
+cursor:pointer;
+margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+<h2>Kitchen Rule</h2>
+
+<input type="text" placeholder="Search restaurants...">
+
+<div class="nav-icons">
+<span onclick="showPage('home')">🏠</span>
+<span onclick="showPage('food')">🍔</span>
+<span onclick="openOrders()">🛒</span>
+</div>
+</div>
+
+<!-- HOME -->
+<!--
+<div id="home" class="page active">
+
+<div class="header">
+<h1>Discover the Best Food</h1>
+<p>Order food from your favourite restaurants</p>
+</div>
+
+<div class="container">
+
+<div class="card">
+<img src="https://www.foodandwine.com/thmb/lsdCIVCX-n5IzWbAhHXluw8LJAM=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/tomato-mozzarella-pizza-FT-RECIPE0725-e7244e979c504188a049623668c15b2e.jpg">
+<h3>Pizza</h3>
+<p class="rating">₹250</p>
+<button class="btn" onclick="orderFood('Pizza',250)">Order Now</button>
+</div>
+
+<div class="card">
+<img src="https://png.pngtree.com/png-clipart/20221001/ourmid/pngtree-fast-food-big-ham-burger-png-image_6244235.png">
+<h3>Burger</h3>
+<p class="rating">₹150</p>
+<button class="btn" onclick="orderFood('Burger',150)">Order Now</button>
+</div>
+
+<div class="card">
+<img src="https://cdn.britannica.com/35/225835-050-A5CC289A/Indian-one-pot-meal-for-party.jpg">
+<h3>Biryani</h3>
+<p class="rating">₹220</p>
+<button class="btn" onclick="orderFood('Biryani',220)">Order Now</button>
+</div>
+
+</div>
+</div>
+
+<!-- FOOD PAGE -->
+<!--
+<div id="food" class="page">
+
+<div class="header">
+<h1>Food Menu</h1>
+</div>
+
+<div class="container">
+
+<div class="card">
+<img src="https://images.immediate.co.uk/production/volatile/sites/30/2021/04/Pasta-alla-vodka-f1d2e1c.jpg">
+<h3>Pasta</h3>
+<p class="rating">₹180</p>
+<button class="btn" onclick="orderFood('Pasta',180)">Order Now</button>
+</div>
+
+<div class="card">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROB01xjiyYDVv6Hs2ps6SmyRHrxmAEsL8thg&s">
+<h3>Pav Bhaji</h3>
+<p class="rating">₹120</p>
+<button class="btn" onclick="orderFood('Pav Bhaji',120)">Order Now</button>
+</div>
+
+</div>
+</div>
+
+<!-- ORDER POPUP -->
+<!--
+<div class="orderBox" id="orderBox">
+<h3>Your Orders</h3>
+
+<div id="orderList"></div>
+
+<div class="total" id="totalPrice"></div>
+
+<button class="closeBtn" onclick="closeOrders()">Close</button>
+
+</div>
+
+<script>
+
+function showPage(page){
+document.getElementById("home").classList.remove("active");
+document.getElementById("food").classList.remove("active");
+document.getElementById(page).classList.add("active");
+}
+
+let orders=[];
+let total=0;
+
+function orderFood(item,price){
+
+orders.push({item,price});
+total+=price;
+
+alert(item+" added to order");
+
+}
+
+function openOrders(){
+
+let list=document.getElementById("orderList");
+list.innerHTML="";
+
+orders.forEach(o=>{
+list.innerHTML+=`<div class="orderItem">${o.item} <span>₹${o.price}</span></div>`;
+});
+
+document.getElementById("totalPrice").innerText="Total: ₹"+total;
+
+document.getElementById("orderBox").style.display="block";
+
+}
+
+function closeOrders(){
+document.getElementById("orderBox").style.display="none";
+}
+
+</script>
+
+</body>
+</html>-->
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Kitchen Rule Clone</title>
+
+<style>
+
+body{
+font-family: Arial;
+margin:0;
+background:url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") no-repeat center fixed;
+background-size:cover;
+}
+
+/* Navbar */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(255,105,180,0.9);
+color:black;
+padding:15px;
+}
+
+.navbar input{
+padding:7px;
+border:none;
+border-radius:5px;
+}
+
+.nav-icons{
+display:flex;
+gap:15px;
+font-size:22px;
+align-items:center;
+}
+
+.nav-icons span{
+cursor:pointer;
+transition:0.3s;
+}
+
+.nav-icons span:hover{
+color:white;
+transform:scale(1.2);
+}
+
+/* Header */
+
+.header{
+text-align:center;
+padding:40px;
+color:white;
+background:rgba(0,0,0,0.4);
+}
+
+/* Cards */
+
+.container{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:20px;
+padding:20px;
+}
+
+.card{
+width:250px;
+background:white;
+border-radius:12px;
+box-shadow:0 10px 20px rgba(0,0,0,0.3);
+overflow:hidden;
+transition:0.4s;
+}
+
+.card:hover{
+transform:translateY(-10px) scale(1.05);
+}
+
+.card img{
+width:100%;
+height:160px;
+object-fit:cover;
+border:4px solid #ff4d6d;
+border-radius:10px;
+}
+
+.rating{
+color:green;
+font-weight:bold;
+}
+
+/* Buttons */
+
+.btn{
+display:block;
+width:80%;
+margin:10px auto 5px;
+padding:8px;
+border:none;
+border-radius:6px;
+background:#ff4d6d;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btn:hover{
+background:#e63950;
+}
+
+.cartBtn{
+display:block;
+width:80%;
+margin:5px auto 15px;
+padding:8px;
+border:none;
+border-radius:6px;
+background:#28a745;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.cartBtn:hover{
+background:#1e7e34;
+}
+
+.page{
+display:none;
+}
+
+.active{
+display:block;
+}
+
+/* Order Popup */
+
+.orderBox{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:white;
+padding:20px;
+border-radius:10px;
+width:300px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+display:none;
+z-index:1000;
+}
+
+.orderBox h3{
+text-align:center;
+}
+
+.orderItem{
+display:flex;
+justify-content:space-between;
+margin:5px 0;
+}
+
+.total{
+font-weight:bold;
+margin-top:10px;
+}
+
+.closeBtn{
+background:red;
+color:white;
+border:none;
+padding:5px 10px;
+cursor:pointer;
+margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+<h2>Kitchen Rule</h2>
+
+<input type="text" placeholder="Search restaurants...">
+
+<div class="nav-icons">
+<span onclick="showPage('home')">🏠</span>
+<span onclick="showPage('food')">🍔</span>
+<span onclick="openOrders()">🛒</span>
+</div>
+</div>
+
+<!-- HOME -->
+
+<div id="home" class="page active">
+
+<div class="header">
+<h1>Discover the Best Food</h1>
+<p>Order food from your favourite restaurants</p>
+</div>
+
+<div class="container">
+
+<div class="card">
+<img src="https://www.foodandwine.com/thmb/lsdCIVCX-n5IzWbAhHXluw8LJAM=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/tomato-mozzarella-pizza-FT-RECIPE0725-e7244e979c504188a049623668c15b2e.jpg">
+<h3>Pizza</h3>
+<p class="rating">₹250</p>
+<button class="btn" onclick="orderFood('Pizza',250)">Order Now</button>
+<button class="cartBtn" onclick="addToCart('Pizza',250)">Add to Cart</button>
+</div>
+
+<div class="card">
+<img src="https://png.pngtree.com/png-clipart/20221001/ourmid/pngtree-fast-food-big-ham-burger-png-image_6244235.png">
+<h3>Burger</h3>
+<p class="rating">₹150</p>
+<button class="btn" onclick="orderFood('Burger',150)">Order Now</button>
+<button class="cartBtn" onclick="addToCart('Burger',150)">Add to Cart</button>
+</div>
+
+<div class="card">
+<img src="https://cdn.britannica.com/35/225835-050-A5CC289A/Indian-one-pot-meal-for-party.jpg">
+<h3>Biryani</h3>
+<p class="rating">₹220</p>
+<button class="btn" onclick="orderFood('Biryani',220)">Order Now</button>
+<button class="cartBtn" onclick="addToCart('Biryani',220)">Add to Cart</button>
+</div>
+
+</div>
+</div>
+
+<!-- FOOD PAGE -->
+
+<div id="food" class="page">
+
+<div class="header">
+<h1>Food Menu</h1>
+</div>
+
+<div class="container">
+
+<div class="card">
+<img src="https://images.immediate.co.uk/production/volatile/sites/30/2021/04/Pasta-alla-vodka-f1d2e1c.jpg">
+<h3>Pasta</h3>
+<p class="rating">₹180</p>
+<button class="btn" onclick="orderFood('Pasta',180)">Order Now</button>
+<button class="cartBtn" onclick="addToCart('Pasta',180)">Add to Cart</button>
+</div>
+
+<div class="card">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROB01xjiyYDVv6Hs2ps6SmyRHrxmAEsL8thg&s">
+<h3>Pav Bhaji</h3>
+<p class="rating">₹120</p>
+<button class="btn" onclick="orderFood('Pav Bhaji',120)">Order Now</button>
+<button class="cartBtn" onclick="addToCart('Pav Bhaji',120)">Add to Cart</button>
+</div>
+
+</div>
+</div>
+
+<!-- ORDER POPUP -->
+
+<div class="orderBox" id="orderBox">
+<h3>Your Cart</h3>
+
+<div id="orderList"></div>
+
+<div class="total" id="totalPrice"></div>
+
+<button class="closeBtn" onclick="closeOrders()">Close</button>
+
+</div>
+
+<script>
+
+function showPage(page){
+document.getElementById("home").classList.remove("active");
+document.getElementById("food").classList.remove("active");
+document.getElementById(page).classList.add("active");
+}
+
+let cart=[];
+let total=0;
+
+function addToCart(item,price){
+cart.push({item,price});
+total+=price;
+alert(item+" added to cart");
+}
+
+function orderFood(item,price){
+addToCart(item,price);
+}
+
+function openOrders(){
+
+let list=document.getElementById("orderList");
+list.innerHTML="";
+
+cart.forEach(o=>{
+list.innerHTML+=`<div class="orderItem">${o.item} <span>₹${o.price}</span></div>`;
+});
+
+document.getElementById("totalPrice").innerText="Total: ₹"+total;
+
+document.getElementById("orderBox").style.display="block";
+
+}
+
+function closeOrders(){
+document.getElementById("orderBox").style.display="none";
+}
+
+</script>
+
+</body>
+</html>
+```
+
